@@ -3,7 +3,7 @@
 
 Name:       %{_name}
 Summary:    Linux Test Project (LTP)
-Version:    0.20140115.1
+Version:    0.20140115.2
 Release:    1
 Group:      Kernel/Linux Kernel
 License:    GPLv2
@@ -18,6 +18,7 @@ Requires:   perl-HTML-Tagset
 Requires:   perl-libwww-perl
 Requires:   perl-URI
 Requires:   tcl
+BuildRequires: sed
 
 %package tests
 Summary:    Tests xml for LTP tests
@@ -31,6 +32,9 @@ This package contains tests.xml for The LTP testsuite.
 
 %prep
 %setup -q
+
+# Disable syslog tests
+sed -i 's/syslog/#syslog/' ltp/runtest/ltplite
 
 %build
 cd ltp
