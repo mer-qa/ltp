@@ -7,7 +7,7 @@ echo "    <set name=\"Linux Kernel LTP\" description=\"LTP Validates the reliabi
 echo "      <pre_steps timeout=\"3600\">"
 echo "        <!-- Run all ltplite test cases, timeout set to one hour -->"
 echo "        <step>/usr/sbin/run-blts-root rm -rf /opt/ltp/results/ltplite_results.log</step>"
-echo "        <step>/usr/sbin/run-blts-root /opt/ltp/runltplite.sh -p -l ltplite_results.log</step>"
+echo "        <step>PATH=/sbin:\$PATH /usr/sbin/run-blts-root /opt/ltp/runltplite.sh -p -l ltplite_results.log</step>"
 echo "      </pre_steps>"
 
 for  var1 in ` awk '/^[a-z]/ {print $1}' <  $1 `
