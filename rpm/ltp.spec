@@ -35,6 +35,8 @@ This package contains tests.xml for The LTP testsuite.
 
 # Disable syslog tests
 sed -i 's/syslog/#syslog/' ltp/runtest/ltplite
+# Disable ustat tests
+sed -i 's/ustat/#ustat/' ltp/runtest/ltplite
 
 %build
 cd ltp
