@@ -37,6 +37,12 @@ This package contains tests.xml for The LTP testsuite.
 sed -i 's/syslog/#syslog/' ltp/runtest/ltplite
 # Disable ustat tests
 sed -i 's/ustat/#ustat/' ltp/runtest/ltplite
+# Disable unreliable mtest06
+sed -i 's/mtest06/#mtest06/' ltp/runtest/ltplite
+# Disable following tests because of SUID
+sed -i 's/nice04/#nice04/' ltp/runtest/ltplite
+sed -i 's/sched_setscheduler02/#sched_setscheduler02/' ltp/runtest/ltplite
+sed -i 's/setpriority02/#setpriority02/' ltp/runtest/ltplite
 
 %build
 cd ltp
