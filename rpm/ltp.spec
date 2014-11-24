@@ -3,7 +3,7 @@
 
 Name:       %{_name}
 Summary:    Linux Test Project (LTP)
-Version:    0.20140828.1
+Version:    0.20140828.2
 Release:    1
 Group:      Kernel/Linux Kernel
 License:    GPLv2
@@ -35,10 +35,6 @@ This package contains tests.xml for The LTP testsuite.
 
 # Disable syslog tests
 sed -i 's/syslog/#syslog/' ltp/runtest/ltplite
-# Disable ustat tests
-sed -i 's/ustat/#ustat/' ltp/runtest/ltplite
-# Disable unreliable mtest06
-sed -i 's/mtest06/#mtest06/' ltp/runtest/ltplite
 # Disable following tests because of SUID
 sed -i 's/nice04/#nice04/' ltp/runtest/ltplite
 sed -i 's/sched_setscheduler02/#sched_setscheduler02/' ltp/runtest/ltplite

@@ -13,7 +13,7 @@ echo "      </pre_steps>"
 for  var1 in ` awk '/^[a-z]/ {print $1}' <  $1 `
 do
     echo "      <case name=\"$var1\">"
-    echo "        <step>grep $var1 /opt/ltp/results/ltplite_results.log |grep PASS</step>"
+    echo "        <step>grep $var1 /opt/ltp/results/ltplite_results.log |grep 'PASS\|CONF'</step>"
     echo "      </case>"
 done
 
