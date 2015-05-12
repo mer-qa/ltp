@@ -3,7 +3,7 @@
 
 Name:       %{_name}
 Summary:    Linux Test Project (LTP)
-Version:    0.20150119.1
+Version:    0.20150420.1
 Release:    1
 Group:      Kernel/Linux Kernel
 License:    GPLv2
