@@ -9,7 +9,7 @@ Group:      Kernel/Linux Kernel
 License:    GPLv2
 URL:        http://ltp.sourceforge.net/
 Source0:    %{name}-%{version}.tar.gz
-Source1:    ltp_create_xml.sh
+Patch0:     0001-Remove-unsupported-csh-and-ksh.patch
 Requires:   expect
 Requires:   mailcap
 Requires:   perl-Compress-Zlib
@@ -17,50 +17,31 @@ Requires:   perl-HTML-Parser
 Requires:   perl-HTML-Tagset
 Requires:   perl-libwww-perl
 Requires:   perl-URI
+Requires:   python3-base
 Requires:   tcl
 BuildRequires: sed
-
-%package tests
-Summary:    Tests xml for LTP tests
-Requires:   %{name} blts-tools
 
 %description
 The LTP testsuite contains a collection of tools for testing the Linux kernel and related features.
 
-%description tests
-This package contains tests.xml for The LTP testsuite.
-
 %prep
-%setup -q
-
-# Disable syslog tests
-sed -i 's/syslog/#syslog/' ltp/runtest/ltplite
-# Disable following tests because of SUID
-sed -i 's/nice04/#nice04/' ltp/runtest/ltplite
-sed -i 's/sched_setscheduler02/#sched_setscheduler02/' ltp/runtest/ltplite
-sed -i 's/setpriority02/#setpriority02/' ltp/runtest/ltplite
+%setup -q -n %{name}-%{version}/ltp
+%patch0 -p1
 
 %build
-cd ltp
 make autotools
 %configure
 make %{?jobs:-j%jobs}
 
 %install
-cd ltp
 %make_install
-find %{buildroot}%{_prefix} -name "*.obj" | xargs rm
+find %{buildroot}%{_prefix} -name "*.obj" | xargs rm -f --
 rm -rf %{buildroot}%{_prefix}/testcases/bin/nmfile.c
 rm -rf %{buildroot}%{_prefix}/testcases/bin/nmfile1.c
 rm -rf %{buildroot}%{_prefix}/testcases/bin/nmfile2.c
 rm -rf %{buildroot}%{_prefix}/testcases/bin/nmfile3.c
-install -d -m 755 %{buildroot}/opt/tests/ltp-tests/
-sh %{SOURCE1} %{_builddir}/%{name}-%{version}/ltp/runtest/ltplite > %{buildroot}/opt/tests/ltp-tests/tests.xml
 
 %files
 %defattr(-,root,root,-)
 %{_prefix}/*
 
-%files tests
-%defattr(-,root,root,-)
-/opt/tests/ltp-tests/tests.xml

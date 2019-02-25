@@ -1,0 +1,40 @@
+From 2ccaa3fd65388deccd45afbc7f4c5ddb33491587 Mon Sep 17 00:00:00 2001
+From: Matti Kosola <matti.kosola@jolla.com>
+Date: Tue, 26 Feb 2019 02:14:09 -0500
+Subject: [PATCH] Remove unsupported csh and ksh
+
+If having these files, rpm will automatically add dependency to the
+csh and ksh. Sailfish OS does not have those packages and that is
+why we need to remove files so that ltp is able to be installed.
+
+Signed-off-by: Matti Kosola <matti.kosola@jolla.com>
+---
+ testcases/commands/file/datafiles/in.csh | 4 ----
+ testcases/commands/file/datafiles/in.ksh | 4 ----
+ 2 files changed, 8 deletions(-)
+ delete mode 100644 testcases/commands/file/datafiles/in.csh
+ delete mode 100644 testcases/commands/file/datafiles/in.ksh
+
+diff --git a/testcases/commands/file/datafiles/in.csh b/testcases/commands/file/datafiles/in.csh
+deleted file mode 100644
+index c475aef..0000000
+--- a/testcases/commands/file/datafiles/in.csh
++++ /dev/null
+@@ -1,4 +0,0 @@
+-#! /bin/csh
+-
+-echo "this is a shell script"
+-echo "used to test file command"
+diff --git a/testcases/commands/file/datafiles/in.ksh b/testcases/commands/file/datafiles/in.ksh
+deleted file mode 100644
+index 3ae4512..0000000
+--- a/testcases/commands/file/datafiles/in.ksh
++++ /dev/null
+@@ -1,4 +0,0 @@
+-#! /bin/ksh
+-
+-echo "this is a shell script"
+-echo "used to test file command"
+-- 
+1.8.3-rc3
+
