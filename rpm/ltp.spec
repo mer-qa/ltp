@@ -40,6 +40,8 @@ rm -rf %{buildroot}%{_prefix}/testcases/bin/nmfile.c
 rm -rf %{buildroot}%{_prefix}/testcases/bin/nmfile1.c
 rm -rf %{buildroot}%{_prefix}/testcases/bin/nmfile2.c
 rm -rf %{buildroot}%{_prefix}/testcases/bin/nmfile3.c
+# remove executable bit from data files
+find %{buildroot}%{_prefix}/testcases/data -type f | xargs chmod a-x
 
 %files
 %defattr(-,root,root,-)
