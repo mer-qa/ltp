@@ -3,9 +3,8 @@
 
 Name:       %{_name}
 Summary:    Linux Test Project (LTP)
-Version:    0.20150420.1
-Release:    1
-Group:      Kernel/Linux Kernel
+Version:    0.20200120.0
+Release:    0
 License:    GPLv2
 URL:        http://ltp.sourceforge.net/
 Source0:    %{name}-%{version}.tar.gz
@@ -19,6 +18,7 @@ Requires:   perl-libwww-perl
 Requires:   perl-URI
 Requires:   python3-base
 Requires:   tcl
+BuildRequires: automake
 BuildRequires: sed
 
 %description
@@ -31,7 +31,7 @@ The LTP testsuite contains a collection of tools for testing the Linux kernel an
 %build
 make autotools
 %configure
-make %{?jobs:-j%jobs}
+make %{?_smp_mflags}
 
 %install
 %make_install
