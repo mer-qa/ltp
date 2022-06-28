@@ -6,7 +6,7 @@ Summary:    Linux Test Project (LTP)
 Version:    0.20200120.0
 Release:    0
 License:    GPLv2
-URL:        http://ltp.sourceforge.net/
+URL:        https://github.com/mer-qa/ltp
 Source0:    %{name}-%{version}.tar.gz
 Patch0:     0001-Remove-unsupported-csh-and-ksh.patch
 Requires:   expect
