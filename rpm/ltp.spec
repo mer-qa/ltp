@@ -8,7 +8,7 @@ Release:    0
 License:    GPLv2
 URL:        https://github.com/mer-qa/ltp
 Source0:    %{name}-%{version}.tar.gz
-Patch0:     0001-Remove-unsupported-csh-and-ksh.patch
+Patch0:     0001-Makefile-Make-symlink-relative.patch
 Requires:   expect
 Requires:   mailcap
 Requires:   perl-Compress-Zlib
@@ -25,13 +25,12 @@ BuildRequires: sed
 The LTP testsuite contains a collection of tools for testing the Linux kernel and related features.
 
 %prep
-%setup -q -n %{name}-%{version}/ltp
-%patch0 -p1
+%autosetup -p1 -n %{name}-%{version}/ltp
 
 %build
 make autotools
 %configure
-make %{?_smp_mflags}
+%make_build
 
 %install
 %make_install
