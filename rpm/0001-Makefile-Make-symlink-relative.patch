@@ -1,0 +1,36 @@
+From c47d3d9311b1b429f385e8d2b35da96dd4330df5 Mon Sep 17 00:00:00 2001
+From: Petr Vorel <pvorel@suse.cz>
+Date: Mon, 2 Oct 2023 12:26:44 +0200
+Subject: [PATCH] Makefile: Make symlink relative
+
+Using full path creates problems with rpm packaging:
+
+ERROR: Link /opt/ltp/runltp-ng ->
+/home/abuild/rpmbuild/BUILDROOT/ltp-20230929.48a150bf-1573.1.x86_64/opt/ltp/kirk
+points inside build root.
+
+Closes: #6
+Fixes: 666a2bd ("Symlink kirk with runltp-ng in LTP installation")
+Fixes: 7e397fe ("Fix 666a2bd8dbf583732ed415abf1bae39bd8791061")
+Suggested-by: Cyril Hrubis <chrubis@suse.cz>
+Reviewed-by: Petr Cervinka <pcervinka@suse.com>
+Signed-off-by: Petr Vorel <pvorel@suse.cz>
+---
+ Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/tools/kirk/Makefile b/tools/kirk/Makefile
+index cd7a025..7db9fc7 100644
+--- a/tools/kirk/Makefile
++++ b/tools/kirk/Makefile
+@@ -15,6 +15,6 @@ install:
+ 	install -m 00644 $(top_srcdir)/tools/kirk/libkirk/*.py $(BASE_DIR)/libkirk
+ 	install -m 00775 $(top_srcdir)/tools/kirk/kirk $(BASE_DIR)/kirk
+ 
+-	ln -sf $(BASE_DIR)/kirk $(BASE_DIR)/runltp-ng
++	cd $(BASE_DIR) && ln -sf kirk runltp-ng
+ 
+ include $(top_srcdir)/include/mk/generic_leaf_target.mk
+-- 
+2.34.1
+
