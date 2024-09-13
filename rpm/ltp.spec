@@ -3,12 +3,12 @@
 
 Name:       %{_name}
 Summary:    Linux Test Project (LTP)
-Version:    0.20200120.0
+Version:    0.20250130.0
 Release:    0
 License:    GPLv2
 URL:        https://github.com/mer-qa/ltp
 Source0:    %{name}-%{version}.tar.gz
-Patch0:     0001-Makefile-Make-symlink-relative.patch
+Patch1:     0001-Disable-broken-test-case.patch
 Requires:   expect
 Requires:   mailcap
 Requires:   perl-Compress-Zlib
@@ -43,6 +43,4 @@ rm -rf %{buildroot}%{_prefix}/testcases/bin/nmfile3.c
 find %{buildroot}%{_prefix}/testcases/data -type f | xargs chmod a-x
 
 %files
-%defattr(-,root,root,-)
 %{_prefix}/*
-
