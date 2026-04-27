@@ -5,13 +5,13 @@ Subject: [PATCH] Disable broken test case
 
 ---
  runtest/cve                   |   1 -
- testcases/cve/Makefile        |   2 -
- testcases/cve/cve-2015-3290.c | 535 ----------------------------------
- 3 files changed, 538 deletions(-)
+ testcases/cve/Makefile        |   8 -
+ testcases/cve/cve-2015-3290.c | 519 ----------------------------------
+ 3 files changed, 528 deletions(-)
  delete mode 100644 testcases/cve/cve-2015-3290.c
 
 diff --git a/runtest/cve b/runtest/cve
-index 1d1d87597..9a0364e9e 100644
+index c3ecd74dd9f837924b810b7b431ebb911d809966..e08152859f4a727e513bd83c9cdf57d5c4e9ed77 100644
 --- a/runtest/cve
 +++ b/runtest/cve
 @@ -5,7 +5,6 @@ cve-2011-2496 vma03
@@ -23,22 +23,28 @@ index 1d1d87597..9a0364e9e 100644
  cve-2016-4470 keyctl01.sh
  cve-2016-4997 setsockopt03
 diff --git a/testcases/cve/Makefile b/testcases/cve/Makefile
-index 01b9b9ccb..aefb4b59d 100644
+index 98c38e90801a21eedad986273d537b16f3e4eb91..aefb4b59d0004c44f9f695d9f10713a652b789d8 100644
 --- a/testcases/cve/Makefile
 +++ b/testcases/cve/Makefile
-@@ -22,6 +22,4 @@ ifneq (,$(filter $(HOST_CPU),x86 x86_64))
+@@ -22,12 +22,4 @@ ifneq (,$(filter $(HOST_CPU),x86 x86_64))
  meltdown: CFLAGS += -msse2
  endif
  
+-# The test needs to clobber %rbp, which requires frame pointer omission.  Also
+-# for x86_64, disable AVX since that could sometimes require a stack
+-# realignment, which gets in the way of frame pointer omission.
 -cve-2015-3290:	CFLAGS += -pthread -fomit-frame-pointer
+-ifeq ($(HOST_CPU),x86_64)
+-cve-2015-3290: CFLAGS += -mno-avx
+-endif
 -
  include $(top_srcdir)/include/mk/generic_leaf_target.mk
 diff --git a/testcases/cve/cve-2015-3290.c b/testcases/cve/cve-2015-3290.c
 deleted file mode 100644
-index 63e5d92c9..000000000
+index cb60582b4f112324c9bc63f467046d4d4359d366..0000000000000000000000000000000000000000
 --- a/testcases/cve/cve-2015-3290.c
 +++ /dev/null
-@@ -1,535 +0,0 @@
+@@ -1,519 +0,0 @@
 -// SPDX-License-Identifier: GPL-2.0-or-later
 -/*
 - * Copyright (c) 2017 Pavel Boldin <pboldin@cloudlinux.com>
@@ -164,16 +170,14 @@ index 63e5d92c9..000000000
 -#include <stdlib.h>
 -#include <stdio.h>
 -#include <inttypes.h>
--#include <asm/ldt.h>
 -#include <unistd.h>
--#include <sys/syscall.h>
 -#include <setjmp.h>
 -#include <signal.h>
 -#include <string.h>
 -#include <sys/wait.h>
 -#include <linux/perf_event.h>
 -
--#include "lapi/syscalls.h"
+-#include "lapi/ldt.h"
 -#include "tst_safe_pthread.h"
 -
 -/* Abstractions for some 32-bit vs 64-bit differences. */
@@ -240,21 +244,7 @@ index 63e5d92c9..000000000
 -		.useable	 = 0
 -	};
 -
--	TEST(tst_syscall(__NR_modify_ldt, 1, &data_desc, sizeof(data_desc)));
--
--	/*
--	 * The kernel intentionally casts modify_ldt() return value
--	 * to unsigned int to prevent sign extension to 64 bits. This may
--	 * result in syscall() returning the value as is instead of setting
--	 * errno and returning -1.
--	 */
--	if (TST_RET > 0 && ((int)TST_RET) < 0) {
--		tst_res(TINFO,
--			"WARNING: Libc mishandled modify_ldt() return value");
--		TST_ERR = -(int)TST_RET;
--		TST_RET = -1;
--	}
--
+-	TEST(modify_ldt(1, &data_desc, sizeof(data_desc)));
 -	if (TST_RET == -1 && TST_ERR == EINVAL) {
 -		tst_brk(TCONF | TTERRNO,
 -			"modify_ldt: 16-bit data segments are probably disabled");
@@ -472,7 +462,7 @@ index 63e5d92c9..000000000
 -
 -	for (i = 0; i < ARRAY_SIZE(perf_events); i++)
 -		if (perf_mmaps[i] != MAP_FAILED)
--			SAFE_MUNMAP(perf_mmaps[i], 512 * 1024);
+-			SAFE_MUNMAP(perf_mmaps[i], event_mlock_kb * 1024);
 -
 -	return (void *)niter;
 -}

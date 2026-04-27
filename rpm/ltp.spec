@@ -3,12 +3,13 @@
 
 Name:       %{_name}
 Summary:    Linux Test Project (LTP)
-Version:    0.20250130.0
+Version:    0.20260130.0
 Release:    0
 License:    GPLv2
 URL:        https://github.com/mer-qa/ltp
 Source0:    %{name}-%{version}.tar.gz
 Patch1:     0001-Disable-broken-test-case.patch
+Patch2:     0002-openat2-define-_GNU_SOURCE-and-include-fcntl.h.patch
 Requires:   expect
 Requires:   mailcap
 Requires:   perl-Compress-Zlib
